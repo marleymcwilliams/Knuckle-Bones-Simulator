@@ -119,7 +119,12 @@ class AIPlayer(Player):
                         gridsc[depth + 1], gridoc[depth + 1] = self.grid.copy(), opponent.grid.copy()
                         max_eval = max(max_eval, self.expectiminimax(depth + 1, maxdepth, opponent, gridsc, gridoc))
                         self.grid, opponent.grid = copy.deepcopy(gridsc[depth]), copy.deepcopy(gridoc[depth])
-                expected_value += (1/6) * max_eval
+                if max_eval != float('-inf'):
+                    expected_value += (1/6) * max_eval
+                else:
+                    self.update_score()
+                    opponent.update_score()
+                    expected_value += (1/6) * (self.score - opponent.score)
             return expected_value
         else:  # Minimizing player's turn
             expected_value = 0
@@ -144,7 +149,12 @@ class AIPlayer(Player):
                         gridsc[depth + 1], gridoc[depth + 1] = self.grid.copy(), opponent.grid.copy()
                         min_eval = min(min_eval, self.expectiminimax(depth + 1, maxdepth, opponent, gridsc, gridoc))
                         self.grid, opponent.grid = copy.deepcopy(gridsc[depth]), copy.deepcopy(gridoc[depth])
-                expected_value += (1/6) * min_eval
+                if min_eval != float('inf'):
+                    expected_value += (1/6) * min_eval
+                else:
+                    self.update_score()
+                    opponent.update_score()
+                    expected_value += (1/6) * (self.score - opponent.score)
             return expected_value
 
 
