@@ -70,7 +70,15 @@ class AIPlayer(Player):
 
             gridsc[1], gridoc[1] = self.grid.copy(), opponent.grid.copy()
 
-            move_value = self.expectiminimax(1, depth, opponent, gridsc, gridoc)
+            if(gridsc[0] != [[0, 0, 0], [0, 0, 0], [0, 0, 0]]) or (gridoc[0] != [[0, 0, 0], [0, 0, 0], [0, 0, 0]]):
+                if (col == 0) or ([gridsc[0][row][col] for row in range(3)] + [gridoc[0][row][col] for row in range(3)] != [gridsc[0][row][col - 1] for row in range(3)] + [gridoc[0][row][col - 1] for row in range(3)]):
+                    move_value = self.expectiminimax(1, depth, opponent, gridsc, gridoc)
+                    if(col == 0):
+                        saved_value = move_value
+                elif (col == 2) and ([gridsc[0][row][2] for row in range(3)] + [gridoc[0][row][2] for row in range(3)] == [gridsc[0][row][0] for row in range(3)] + [gridoc[0][row][0] for row in range(3)]):
+                    move_value = saved_value
+            else:
+                move_value = 0
 
             print(f"Value for column {col}: {move_value}")
             if move_value > best_value:
