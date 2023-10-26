@@ -69,7 +69,8 @@ class AIPlayer(Player):
             #opponent.print_grid()
 
             gridsc[1], gridoc[1] = self.grid.copy(), opponent.grid.copy()
-
+            saved_values = [0 for _ in range(3)]
+            
             if([[[0, 0, 0] for _ in range(3)]]*2 != [gridsc[0],gridoc[0]]):
                 if(col == 0):
                     move_value = self.expectiminimax(1, depth, opponent, gridsc, gridoc)
